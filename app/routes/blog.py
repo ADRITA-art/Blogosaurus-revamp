@@ -51,6 +51,19 @@ def all_blogs():
         "author": b.user
     } for b in blogs])
 
+@blog_bp.route('/<int:blog_id>', methods=['GET'])
+def get_blog(blog_id):
+    blog = Blog.query.get_or_404(blog_id)
+    return jsonify({
+        "id": blog.id,
+        "title": blog.title,
+        "content": blog.content,
+        "user_id": blog.user_id,
+        "author": blog.user.username,
+        "tags": [tag.name for tag in blog.tags],
+        "created_at": blog.created_at.isoformat()
+    })
+
 @blog_bp.route('/<int:blog_id>', methods=['PUT', 'DELETE'])
 @jwt_required()
 def edit_or_delete_blog(blog_id):
