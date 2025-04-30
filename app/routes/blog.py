@@ -28,7 +28,12 @@ def create_blog():
 def my_blogs():
     user = get_current_user()
     blogs = Blog.query.filter_by(user_id=user.id).all()
-    return jsonify([{ "title": b.title, "content": b.content } for b in blogs])
+    return jsonify([{
+        "id": b.id,
+        "title": b.title,
+        "content": b.content,
+        "user_id": b.user_id
+    } for b in blogs])
 
 @blog_bp.route('/all', methods=['GET'])
 def all_blogs():
@@ -38,7 +43,13 @@ def all_blogs():
         blogs = tag_obj.blogs if tag_obj else []
     else:
         blogs = Blog.query.all()
-    return jsonify([{ "title": b.title, "content": b.content } for b in blogs])
+    return jsonify([{
+        "id": b.id,
+        "title": b.title,
+        "content": b.content,
+        "user_id": b.user_id,
+        "author": b.user
+    } for b in blogs])
 
 @blog_bp.route('/<int:blog_id>', methods=['PUT', 'DELETE'])
 @jwt_required()
@@ -53,7 +64,15 @@ def edit_or_delete_blog(blog_id):
         blog.title = data.get('title', blog.title)
         blog.content = data.get('content', blog.content)
         db.session.commit()
-        return jsonify({"msg": "Blog updated"})
+        return jsonify({
+            "msg": "Blog updated",
+            "blog": {
+                "id": blog.id,
+                "title": blog.title,
+                "content": blog.content,
+                "user_id": blog.user_id
+            }
+        })
 
     db.session.delete(blog)
     db.session.commit()
