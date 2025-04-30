@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from app import db
 from app.models.blog import Blog
 from app.models.tag import Tag
+from app.models.user import User
 from app.utils.auth import get_current_user
 from flask_jwt_extended import jwt_required
 
@@ -59,7 +60,7 @@ def get_blog(blog_id):
         "title": blog.title,
         "content": blog.content,
         "user_id": blog.user_id,
-        "author": blog.user.username,
+        "author": blog.author.username,  # Using the author relationship
         "tags": [tag.name for tag in blog.tags],
         "created_at": blog.created_at.isoformat()
     })
