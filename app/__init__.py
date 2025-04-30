@@ -13,7 +13,18 @@ jwt = JWTManager()
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
-    CORS(app) 
+    
+    # Configure CORS with specific options
+    CORS(app, resources={
+        r"/*": {
+            "origins": ["http://localhost:5173", "http://localhost:3000"],  
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization"],
+            "supports_credentials": True,
+            "max_age": 3600
+        }
+    })
+    
     db.init_app(app)
     jwt.init_app(app)
 
