@@ -49,7 +49,7 @@ def all_blogs():
         "title": b.title,
         "content": b.content,
         "user_id": b.user_id,
-        "author": b.user
+        "author": b.author.username  # Changed from b.user to b.author.username
     } for b in blogs])
 
 @blog_bp.route('/<int:blog_id>', methods=['GET'])
