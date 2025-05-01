@@ -26,9 +26,9 @@ def generate_blog():
     )
     content = response.choices[0].message.content
 
-    user = get_current_user()
-    blog = Blog(title=topic, content=content, author=user)
-    db.session.add(blog)
-    db.session.commit()
 
-    return jsonify({"msg": "AI Blog created", "content": content})
+    return jsonify({
+        "success": True,
+        "content": content,
+        "title": topic
+    })
