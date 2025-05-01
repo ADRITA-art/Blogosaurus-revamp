@@ -17,10 +17,22 @@ def create_app():
     # Configure CORS with specific options
     CORS(app, resources={
         r"/*": {
-            "origins": ["http://localhost:5173", "http://localhost:3000","https://blogo-revamp-fe.vercel.app/"],  
+            "origins": [
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://blogo-revamp-fe.vercel.app"
+            ],
             "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-            "allow_headers": ["Content-Type", "Authorization"],
+            "allow_headers": [
+                "Content-Type",
+                "Authorization",
+                "Access-Control-Allow-Credentials",
+                "Access-Control-Allow-Origin",
+                "Access-Control-Allow-Headers",
+                "Origin, X-Requested-With, Content-Type, Accept"
+            ],
             "supports_credentials": True,
+            "expose_headers": ["Content-Range", "X-Content-Range"],
             "max_age": 3600
         }
     })
